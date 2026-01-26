@@ -18,7 +18,7 @@ from datetime import datetime, timedelta
 import os
 import sys
 
-OUTPUT_FILE = "/Users/miha/Developer/scries/2026-01-24-wordle/amp/solutions.txt"
+OUTPUT_FILE = os.path.join(os.path.dirname(__file__), "solutions.txt")
 START_DATE = datetime(2021, 6, 19)  # First Wordle date
 
 def read_existing_solutions():

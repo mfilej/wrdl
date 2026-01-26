@@ -1,0 +1,40 @@
+name: Fetch Wordle Solutions
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Run at 2 AM UTC daily
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date in YYYY-MM-DD format (optional)'
+        required: false
+        type: string
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install requests
+      
+      - name: Fetch solutions (no date)
+        if: github.event.inputs.date == '' || github.event.inputs.date == null
+        run: python3 fetch.py
+      
+      - name: Fetch solutions (specific date)
+        if: github.event.inputs.date != '' && github.event.inputs.date != null
+        run: python3 fetch.py "${{ github.event.inputs.date }}"
+      
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add solutions.txt
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update Wordle solutions" && git push)
