@@ -10,6 +10,9 @@ on:
         required: false
         type: string
 
+permissions:
+  contents: write
+
 jobs:
   fetch:
     runs-on: ubuntu-latest
