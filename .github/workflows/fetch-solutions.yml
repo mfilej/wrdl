@@ -40,4 +40,4 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add solutions.txt
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update Wordle solutions" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update Wordle solutions" && git pull --rebase && git push)
