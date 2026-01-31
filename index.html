@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wordle Solutions</title>
+    <title>Wordle Archive</title>
     <style>
         * {
             margin: 0;
@@ -15,8 +15,9 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #ffffff;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 100vh;
             padding: 20px;
         }
@@ -24,6 +25,16 @@
         .container {
             width: 100%;
             max-width: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #333;
         }
 
         input {
@@ -35,6 +46,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             font-family: monospace;
+            flex-shrink: 0;
         }
 
         input:focus {
@@ -44,12 +56,17 @@
 
         .results {
             margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .match {
             padding: 8px 0;
             border-bottom: 1px solid #f0f0f0;
             font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .match:last-child {
@@ -59,9 +76,8 @@
         .date {
             font-size: 12px;
             color: #666;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid #ccc;
+            margin-left: 16px;
+            flex-shrink: 0;
         }
 
         .empty {
@@ -73,10 +89,11 @@
 </head>
 <body>
     <div class="container">
+        <h1>Wordle Archive</h1>
         <input 
             id="searchInput" 
             type="text" 
-            placeholder="WORDLE"
+            placeholder="Search"
             maxlength="5"
             autofocus
         >
@@ -119,20 +136,21 @@
             matches.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'match';
-                div.textContent = item.word;
+                
+                const word = document.createElement('span');
+                word.textContent = item.word;
+                div.appendChild(word);
+
+                // If full word (5 letters) and exact match, show date inline
+                if (query.length === 5 && item.word === query) {
+                    const dateSpan = document.createElement('span');
+                    dateSpan.className = 'date';
+                    dateSpan.textContent = item.date;
+                    div.appendChild(dateSpan);
+                }
+
                 resultsDiv.appendChild(div);
             });
-
-            // If full word (5 letters) and exact match, show date
-            if (query.length === 5) {
-                const exactMatch = solutions.find(item => item.word === query);
-                if (exactMatch) {
-                    const dateDiv = document.createElement('div');
-                    dateDiv.className = 'date';
-                    dateDiv.textContent = exactMatch.date;
-                    resultsDiv.appendChild(dateDiv);
-                }
-            }
         });
     </script>
 </body>
