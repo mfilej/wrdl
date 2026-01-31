@@ -104,14 +104,15 @@
         let solutions = [];
 
         // Load solutions on startup
-        fetch('./solutions.txt')
+        fetch('https://raw.githubusercontent.com/mfilej/wrdl/main/solutions.txt')
             .then(response => response.text())
             .then(text => {
                 solutions = text.trim().split('\n').map(line => {
                     const [date, word] = line.trim().split(/\s+/);
                     return { date, word };
                 });
-            });
+            })
+            .catch(error => console.error('Failed to load solutions:', error));
 
         const searchInput = document.getElementById('searchInput');
         const resultsDiv = document.getElementById('results');
