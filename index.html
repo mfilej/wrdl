@@ -85,6 +85,12 @@
             font-size: 14px;
             margin-top: 12px;
         }
+
+        .invalid {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 12px;
+        }
     </style>
 </head>
 <body>
@@ -102,17 +108,24 @@
 
     <script>
         let solutions = [];
+        let validWords = new Set();
 
-        // Load solutions on startup
-        fetch('https://raw.githubusercontent.com/mfilej/wrdl/main/solutions.txt')
-            .then(response => response.text())
-            .then(text => {
-                solutions = text.trim().split('\n').map(line => {
-                    const [date, word] = line.trim().split(/\s+/);
-                    return { date, word };
-                });
-            })
-            .catch(error => console.error('Failed to load solutions:', error));
+        // Load solutions and valid words on startup
+        Promise.all([
+            fetch('https://raw.githubusercontent.com/mfilej/wrdl/main/solutions.txt')
+                .then(response => response.text())
+                .then(text => {
+                    solutions = text.trim().split('\n').map(line => {
+                        const [date, word] = line.trim().split(/\s+/);
+                        return { date, word };
+                    });
+                }),
+            fetch('https://raw.githubusercontent.com/mfilej/wrdl/main/valid.txt')
+                .then(response => response.text())
+                .then(text => {
+                    validWords = new Set(text.trim().split('\n').map(word => word.toUpperCase()));
+                })
+        ]).catch(error => console.error('Failed to load data:', error));
 
         const searchInput = document.getElementById('searchInput');
         const resultsDiv = document.getElementById('results');
@@ -122,6 +135,17 @@
             resultsDiv.innerHTML = '';
 
             if (!query) return;
+
+            // Check if input is a full 5-letter word and invalid
+            // (invalid only if not in valid word list AND not a solution)
+            if (query.length === 5) {
+                const isValidWord = validWords.has(query);
+                const isSolution = solutions.some(item => item.word === query);
+                if (!isValidWord && !isSolution) {
+                    resultsDiv.innerHTML = '<div class="invalid">Not a playable word</div>';
+                    return;
+                }
+            }
 
             // Filter by prefix match
             const matches = solutions.filter(item => 
