@@ -13,9 +13,10 @@ const isLoading = ref(true);
 
 onMounted(async () => {
   try {
+    const base = import.meta.env.BASE_URL;
     const [solRes, validRes] = await Promise.all([
-      fetch('/solutions.txt'),
-      fetch('/valid.txt')
+      fetch(`${base}solutions.txt`),
+      fetch(`${base}valid.txt`)
     ]);
 
     const solText = await solRes.text();
