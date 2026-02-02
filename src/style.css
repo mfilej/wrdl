@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'ClearSansSubset';
+  src: url('./assets/ClearSans-Regular-subset.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme {
+  --font-clear-sans: "ClearSansSubset", system-ui, sans-serif;
+}
