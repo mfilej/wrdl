@@ -12,7 +12,9 @@ export default defineConfig({
     tidewave(),
     viteStaticCopy({
       targets: [
-        { src: '*.txt', dest: '.' }
+        { src: 'solutions.txt', dest: '.' },
+        { src: 'solutions-era1.txt', dest: '.' },
+        { src: 'valid.txt', dest: '.' }
       ]
     })
   ],
