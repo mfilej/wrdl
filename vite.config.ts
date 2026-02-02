@@ -4,6 +4,7 @@ import tidewave from 'tidewave/vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  base: '/wrdl/',
   plugins: [vue(), tailwindcss(), tidewave()],
   build: {
     outDir: 'dist'
