@@ -1,5 +1,5 @@
 [tools]
 bun = "latest"
 
-[tasks.server]
+[tasks.dev]
 run = "bun run dev"
