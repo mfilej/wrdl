@@ -1,0 +1,3 @@
+[daemons.wrdl-dev]
+run = "mise run dev"
+auto = ["start", "stop"]
